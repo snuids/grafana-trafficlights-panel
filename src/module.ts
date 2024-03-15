@@ -15,6 +15,21 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
     name: 'Name Font Size',
     description: 'Size of font',
     defaultValue: 20})    
+  .addNumberInput({
+      path: 'borderSize',
+      name: 'Border Size',
+      description: 'Size of border',
+      defaultValue: 2})        
+  .addColorPicker({
+    path: 'borderColor',
+    name: 'Border Color',
+    description: 'Color of border',
+    defaultValue: "black"})
+  .addNumberInput({
+        path: 'borderRadius',
+        name: 'Border Radius',
+        description: 'Radius of panel',
+        defaultValue: 0})        
   .addBooleanSwitch({
     path: 'showValue',
     name: 'Show Value',
