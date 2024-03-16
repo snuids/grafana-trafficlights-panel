@@ -4,6 +4,23 @@ import { SimplePanel } from './components/SimplePanel';
 
 export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOptions((builder) => {
   return builder
+  .addRadio({
+    path: 'meterType',
+    name: 'Meter Type',
+    defaultValue: 'background',
+    settings: {
+      options: [
+        {
+          value: 'background',
+          label: 'Color',
+        },
+        {
+          value: 'svg',
+          label: 'SVG',
+        }
+      ],
+    }
+  })
     .addSliderInput({
       path: 'lightsPerLine',
       name: 'Lights Per Line',

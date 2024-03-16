@@ -2,9 +2,13 @@
 //import { FieldConfigSource } from "@grafana/schema";
 
 //type SeriesSize = 'sm' | 'md' | 'lg';
+type GraphType = 'background' | 'svg'
+type MeterType = 'Colorize by Diff' | 'Colorize by threshold'
 
 export interface SimpleOptions {
   text: string;
+ graphType: GraphType;
+ meterType: MeterType;
   lightsPerLine: number;
   borderSize: number;
   borderRadius: number;
