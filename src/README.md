@@ -13,16 +13,16 @@ Copy the dist folder in your grafana plugin directory and rename it to trafficli
 
 ## Showcase
 
-![Traffic Lights](https://raw.githubusercontent.com/snuids/grafana-trafficlights-panel/master/media/Example.png)
+![Traffic Lights](https://raw.githubusercontent.com/snuids/grafana-trafficlights-panel/master/src/media/Example.png)
 
 
 ## Panel Options
 
-![Traffic Lights](https://raw.githubusercontent.com/snuids/grafana-trafficlights-panel/master/media/Config.png)
+![Traffic Lights](https://raw.githubusercontent.com/snuids/grafana-trafficlights-panel/master/src/media/Config.png)
 
 ## Datasource
 
-![Traffic Lights](https://raw.githubusercontent.com/snuids/grafana-trafficlights-panel/master/media/Datasource.png)
+![Traffic Lights](https://raw.githubusercontent.com/snuids/grafana-trafficlights-panel/master/src/media/Datasource.png)
 
 
 # Versions
