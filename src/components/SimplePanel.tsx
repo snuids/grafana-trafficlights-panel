@@ -2,7 +2,7 @@ import React from 'react';
 import { PanelProps } from '@grafana/data';
 import { SimpleOptions } from 'types';
 import { css, cx } from '@emotion/css';
-import { useStyles2,useTheme2 } from '@grafana/ui';
+import { useStyles2, useTheme2 } from '@grafana/ui';
 
 interface Props extends PanelProps<SimpleOptions> {}
 
@@ -30,19 +30,48 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   const theme = useTheme2();
   const styles = useStyles2(getStyles);
 
-  console.log(theme)
+  console.log(theme);
 
-  let serieNames = data.series.map((s) => s.name);
+  const convert_ht: any = {};
+  for (let conv of options.nameConverter) {
+    let spli = conv.split(':');
+    if (spli.length > 1) {
+      convert_ht[spli[0]] = spli[1];
+    }
+  }
+
+  let serieNames = data.series.map((s) => {
+    if (convert_ht['' + s.name] == null) {
+      return s.name;
+    }
+    return convert_ht['' + s.name];
+  });
 
   const mainStyle = (index: number) => {
+    let color=lastvals[index].color;
+    let forecolor="white";
+
+    if (options.useBackgroundColor)
+    {
+      color=options.backgroundColor;
+      forecolor=options.foregroundColor;
+    }
     return {
+      margin: options.margin,
       float: 'left',
-      backgroundColor: lastvals[index].color,
-      border: 'solid '+options.borderSize+'px '+options.borderColor,
-      width: ''+(width / options.lightsPerLine)+"px",
-      borderRadius: ''+options.borderRadius+'px',      
+      backgroundColor: color,
+      color:forecolor,
+      border: 'solid ' + options.borderSize + 'px ' + options.borderColor,
+      width: '' + (width - 2 * options.margin * options.lightsPerLine) / options.lightsPerLine + 'px',
+      borderRadius: '' + options.borderRadius + 'px',
     };
   };
+
+  const mainStyleTrend = (index:number) =>{
+    return { textAlign: 'center', fontSize: options.trendFontSize,backgroundColor:lastvals[index].color,color:"white"
+    ,marginLeft:options.borderRadius/2,marginRight:options.borderRadius/2
+  }
+  }
 
   let lastvals: Array<{ lastVal: any; lastVal2: any; diff: any; color: string }>;
   lastvals = data.series
@@ -61,8 +90,21 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         if (clean.length - 1 > 0) {
           lastval2 = clean[clean.length - 2];
           diff = lastval2 - lastval;
-          if (diff >= 0) {color = 'green';}
-          else if (diff < 0) {color = 'red';}
+          if (!(options.minimumAbsoluteChange > 0 && Math.abs(diff) < options.minimumAbsoluteChange)) {
+            if (options.invertedScale) {
+              if (diff >= 0) {
+                color = 'green';
+              } else if (diff < 0) {
+                color = 'red';
+              }
+            } else {
+              if (diff >= 0) {
+                color = 'red';
+              } else if (diff < 0) {
+                color = 'green';
+              }
+            }
+          }
         }
         return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color };
       }
@@ -85,10 +127,12 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
           return (
             <div style={mainStyle(index)}>
               {options.showValue && (
-                <div style={{ textAlign: 'center', fontSize: options.valueFontSize }}>{lastvals[index].lastVal}</div>
+                <div style={{ textAlign: 'center', fontSize: options.valueFontSize }}>
+                  {lastvals[index].lastVal} {options.showUnits ? options.units : ''}
+                </div>
               )}
               {options.showTrend && (
-                <div style={{ textAlign: 'center', fontSize: options.trendFontSize }}>
+                <div style={mainStyleTrend(index)}>
                   {lastvals[index].diff >= 0 ? '+' : ''}
                   {lastvals[index].diff}
                 </div>
@@ -98,7 +142,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
             </div>
           );
         })}
-      </div>            
+      </div>
     </div>
   );
 };
