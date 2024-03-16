@@ -48,30 +48,34 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   });
 
   const mainStyle = (index: number) => {
-    let color=lastvals[index].color;
-    let forecolor="white";
+    let color = lastvals[index].color;
+    let forecolor = 'white';
 
-    if (options.useBackgroundColor)
-    {
-      color=options.backgroundColor;
-      forecolor=options.foregroundColor;
+    if (options.useBackgroundColor) {
+      color = options.backgroundColor;
+      forecolor = options.foregroundColor;
     }
     return {
       margin: options.margin,
-      float: 'left',
+      float: 'left' as const,
       backgroundColor: color,
-      color:forecolor,
+      color: forecolor,
       border: 'solid ' + options.borderSize + 'px ' + options.borderColor,
       width: '' + (width - 2 * options.margin * options.lightsPerLine) / options.lightsPerLine + 'px',
       borderRadius: '' + options.borderRadius + 'px',
     };
   };
 
-  const mainStyleTrend = (index:number) =>{
-    return { textAlign: 'center', fontSize: options.trendFontSize,backgroundColor:lastvals[index].color,color:"white"
-    ,marginLeft:options.borderRadius/2,marginRight:options.borderRadius/2
-  }
-  }
+  const mainStyleTrend = (index: number) => {
+    return {
+      textAlign: 'center' as const,
+      fontSize: options.trendFontSize,
+      backgroundColor: lastvals[index].color,
+      color: 'white',
+      marginLeft: options.borderRadius / 2,
+      marginRight: options.borderRadius / 2,
+    };
+  };
 
   let lastvals: Array<{ lastVal: any; lastVal2: any; diff: any; color: string }>;
   lastvals = data.series
@@ -125,9 +129,9 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       <div>
         {serieNames.map((one, index) => {
           return (
-            <div style={mainStyle(index)}>
+            <div key={index} style={mainStyle(index)}>
               {options.showValue && (
-                <div style={{ textAlign: 'center', fontSize: options.valueFontSize }}>
+                <div style={{ textAlign: 'center' as const, fontSize: options.valueFontSize }}>
                   {lastvals[index].lastVal} {options.showUnits ? options.units : ''}
                 </div>
               )}

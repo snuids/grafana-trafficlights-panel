@@ -14,7 +14,9 @@
       "large": "img/logo.svg"
     },
     "links": [],
-    "screenshots": [],
+    "screenshots": ["https://raw.githubusercontent.com/snuids/grafana-trafficlights-panel/master/media/Example.png"
+  ,"https://raw.githubusercontent.com/snuids/grafana-trafficlights-panel/master/media/Config.png"],
+  
     "version": "%VERSION%",
     "updated": "%TODAY%"
   },
