@@ -13,4 +13,4 @@ cp -r dist/ snuids-trafficlights-panel
 zip snuids-trafficlights-panel-$version.zip snuids-trafficlights-panel -r
 
 rm packages/snuids-trafficlights-panel-$version.zip
-cp snuids-trafficlights-panel-$version.zip ./packages/
+mv snuids-trafficlights-panel-$version.zip ./packages/
