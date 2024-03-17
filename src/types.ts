@@ -12,6 +12,7 @@ export interface SimpleOptions {
   
   thresholdMinValue: number
   thresholdMaxValue: number
+  sortByDiff: boolean
   
   lightsPerLine: number;
   borderSize: number;

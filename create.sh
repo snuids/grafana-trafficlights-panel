@@ -2,7 +2,9 @@
 
 #export GRAFANA_ACCESS_POLICY_TOKEN=TO
 
-version="2.0.4"
+version="2.0.6"
+
+cp README.md ./src/README.md
 
 nvm use v20
 yarn build

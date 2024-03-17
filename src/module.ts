@@ -87,6 +87,13 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
       defaultValue: 20,
       showIf: (config) => config.meterType==="diff"
     })
+    .addBooleanSwitch({
+      path: 'sortByDiff',
+      name: 'Sort by trends',
+      description: 'Sort the results per trend',
+      defaultValue: true,
+      showIf: (config) => config.meterType==="diff"
+    })
     .addNumberInput({
       path: 'thresholdMinValue',
       name: 'Threshold Minimum Value',

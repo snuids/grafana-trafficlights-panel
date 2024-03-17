@@ -97,7 +97,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
     };
   };
 
-  let lastvals: Array<{ lastVal: any; lastVal2: any; diff: any; color: string; colorIndex: number }>;
+  let lastvals: Array<{ lastVal: any; lastVal2: any; diff: any; color: string; colorIndex: number,name: string }>;
   lastvals = data.series
     .map((series) => series.fields.find((field) => field.type === 'number'))
     .map((field) => {
@@ -158,10 +158,22 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
           }
           
         }
-        return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color, colorIndex: colorindex };
+        return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color, colorIndex: colorindex,name:"" };
       }
-      return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color, colorIndex: colorindex };
+      return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color, colorIndex: colorindex,name:"" };
     });
+
+  let i=0;
+  for (let s of serieNames)
+  {
+    lastvals[i].name=s;
+    i++;
+  }
+  
+  if ((options.sortByDiff)&&(options.meterType==='diff'))
+  {
+    lastvals.sort((a,b)=>Math.abs(b.diff)-Math.abs(a.diff))
+  }
 
   return (
     <div
@@ -175,18 +187,18 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       )}
     >
       <div>
-        {serieNames.map((one, index) => {
+        {lastvals.map((one, index) => {
           return (
             <div key={index} style={mainStyle(index)}>
               {options.showValue && (
                 <div style={{ textAlign: 'center' as const, fontSize: options.valueFontSize }}>
-                  {lastvals[index].lastVal} {options.showUnits ? options.units : ''}
+                  {one.lastVal} {options.showUnits ? options.units : ''}
                 </div>
               )}
               {options.graphType === 'svg' && (
                 <div style={{ width: '100%', textAlign: 'center' }}>
                   <svg viewBox={options.svgViewBox} className="" width={computeWidth(0.7)} height={computeWidth(0.7)}>
-                    <g stroke={lastvals[index].color} fill={lastvals[index].color}>
+                    <g stroke={one.color} fill={one.color}>
                       <path d={options.svgIcon}></path>
                     </g>
                   </svg>
@@ -214,12 +226,12 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
               )}
               {options.showTrend && (
                 <div style={mainStyleTrend(index)}>
-                  {lastvals[index].diff >= 0 ? '+' : ''}
-                  {lastvals[index].diff}
+                  {one.diff >= 0 ? '+' : ''}
+                  {one.diff}
                 </div>
               )}
 
-              <div style={{ textAlign: 'center', fontSize: options.nameFontSize }}>{one}</div>
+              <div style={{ textAlign: 'center', fontSize: options.nameFontSize }}>{one.name}</div>
             </div>
           );
         })}
