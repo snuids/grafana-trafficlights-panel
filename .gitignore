@@ -6,6 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+snuids-trafficlights-panel/**
 node_modules/
 
 # Runtime data
@@ -33,3 +34,4 @@ e2e-results/
 .idea
 
 .eslintcache
+src/.DS_Store

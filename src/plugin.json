@@ -10,8 +10,8 @@
       "name": "Snuids"
     },
     "logos": {
-      "small": "media/traffic_light_logo.jpg",
-      "large": "media/traffic_light_logo.jpg"
+      "small": "img/traffic_light_logo.png",
+      "large": "img/traffic_light_logo.png"
     },
     "links": [],
     "screenshots": [{"name": "Showcase", "path": "media/Example.png"},
