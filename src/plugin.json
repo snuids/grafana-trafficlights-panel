@@ -14,7 +14,9 @@
       "large": "img/logo.svg"
     },
     "links": [],
-    "screenshots": [],
+    "screenshots": [{"name": "Showcase", "path": "src/media/Example.png"},
+    {"name": "Config", "path": "src/media/Config.png"},
+    {"name": "Datasource", "path": "src/media/Datasource.png"}],
   
     "version": "%VERSION%",
     "updated": "%TODAY%"
