@@ -10,13 +10,13 @@
       "name": "Snuids"
     },
     "logos": {
-      "small": "img/logo.svg",
-      "large": "img/logo.svg"
+      "small": "media/traffic_light_logo.jpg",
+      "large": "media/traffic_light_logo.jpg"
     },
     "links": [],
-    "screenshots": [{"name": "Showcase", "path": "src/media/Example.png"},
-    {"name": "Config", "path": "src/media/Config.png"},
-    {"name": "Datasource", "path": "src/media/Datasource.png"}],
+    "screenshots": [{"name": "Showcase", "path": "media/Example.png"},
+    {"name": "Config", "path": "media/Config.png"},
+    {"name": "Datasource", "path": "media/Datasource.png"}],
   
     "version": "%VERSION%",
     "updated": "%TODAY%"
