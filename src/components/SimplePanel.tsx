@@ -31,8 +31,6 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   const theme = useTheme2();
   const styles = useStyles2(getStyles);
 
-  console.log(theme);
-
   const convert_ht: any = {};
   for (let conv of options.nameConverter) {
     let spli = conv.split(':');
@@ -55,11 +53,10 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   const mainStyle = (index: number) => {
     let color = lastvals[index].color;
 
-    let forecolor = 'white';
+    let forecolor = theme.colors.text.primary; //'white';
 
-    if (options.graphType!=='background')
-    {      
-      color="#00000000"
+    if (options.graphType !== 'background') {
+      color = '#00000000';
     }
     if (options.useBackgroundColor) {
       color = options.backgroundColor;
@@ -115,28 +112,51 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         if (clean.length > 0) {
           lastval = clean[clean.length - 1];
         }
-        if (clean.length - 1 > 0) {
-          lastval2 = clean[clean.length - 2];
-          diff = lastval2 - lastval;
-          if (!(options.minimumAbsoluteChange > 0 && Math.abs(diff) < options.minimumAbsoluteChange)) {
-            if (options.invertedScale) {
-              if (diff >= 0) {
-                color = 'green';
-                colorindex = 2;
-              } else if (diff < 0) {
-                color = 'red';
-                colorindex = 0;
-              }
-            } else {
-              if (diff >= 0) {
-                color = 'red';
-                colorindex = 0;
-              } else if (diff < 0) {
-                color = 'green';
-                colorindex = 2;
+        if (options.meterType === 'diff') {
+          if (clean.length - 1 > 0) {
+            lastval2 = clean[clean.length - 2];
+            diff = lastval2 - lastval;
+            if (!(options.minimumAbsoluteChange > 0 && Math.abs(diff) < options.minimumAbsoluteChange)) {
+              if (options.invertedScale) {
+                if (diff >= 0) {
+                  color = 'green';
+                  colorindex = 2;
+                } else if (diff < 0) {
+                  color = 'red';
+                  colorindex = 0;
+                }
+              } else {
+                if (diff >= 0) {
+                  color = 'red';
+                  colorindex = 0;
+                } else if (diff < 0) {
+                  color = 'green';
+                  colorindex = 2;
+                }
               }
             }
+          } 
+        }
+        else {
+          
+          if (options.invertedScale) {
+            if (lastval >= options.thresholdMaxValue) {
+              color = 'green';
+              colorindex = 2;
+            } else if (lastval <= options.thresholdMinValue) {
+              color = 'red';
+              colorindex = 0;
+            }
+          } else {
+            if (lastval >= options.thresholdMaxValue) {
+              color = 'red';
+              colorindex = 0;
+            } else if (lastval <= options.thresholdMinValue) {
+              color = 'green';
+              colorindex = 2;
+            }
           }
+          
         }
         return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color, colorIndex: colorindex };
       }

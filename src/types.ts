@@ -3,13 +3,15 @@
 
 //type SeriesSize = 'sm' | 'md' | 'lg';
 type GraphType = 'background' | 'svg' | 'traffic'
-type MeterType = 'Colorize by Diff' | 'Colorize by threshold'
+type MeterType = 'diff' | 'absolute'
 
 export interface SimpleOptions {
   text: string;
   graphType: GraphType;
   meterType: MeterType;
   
+  thresholdMinValue: number
+  thresholdMaxValue: number
   
   lightsPerLine: number;
   borderSize: number;

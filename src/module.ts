@@ -26,6 +26,23 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
         ],
       }
     })
+    .addRadio({
+      path: 'meterType',
+      name: 'Meter Type',
+      defaultValue: 'diff',
+      settings: {
+        options: [
+          {
+            value: 'diff',
+            label: 'Colorize by Trend',
+          },
+          {
+            value: 'absolute',
+            label: 'Colorize by Value',
+          }          
+        ],
+      }
+    })
     .addTextInput(
       {
         path: 'svgIcon', name: 'svg source', description: 'svg code'
@@ -67,7 +84,22 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
       path: 'minimumAbsoluteChange',
       name: 'Minimum Absolute Change',
       description: 'Minimum Absolute Change to colorize the value. Use 0 for always red or green',
-      defaultValue: 20
+      defaultValue: 20,
+      showIf: (config) => config.meterType==="diff"
+    })
+    .addNumberInput({
+      path: 'thresholdMinValue',
+      name: 'Threshold Minimum Value',
+      description: 'Minimum Threshold Value',
+      defaultValue: 100,
+      showIf: (config) => config.meterType==="absolute"
+    })
+    .addNumberInput({
+      path: 'thresholdMaxValue',
+      name: 'Threshold Maximum Value',
+      description: 'Maximum Threshold Value',
+      defaultValue: 1000,
+      showIf: (config) => config.meterType==="absolute"
     })
     .addBooleanSwitch({
       path: 'useBackgroundColor',
