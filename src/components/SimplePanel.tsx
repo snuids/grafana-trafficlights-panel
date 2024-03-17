@@ -1,4 +1,5 @@
 import React from 'react';
+import 'components/SimplePanel.css';
 import { PanelProps } from '@grafana/data';
 import { SimpleOptions } from 'types';
 import { css, cx } from '@emotion/css';
@@ -47,10 +48,19 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
     return convert_ht['' + s.name];
   });
 
+  const computeWidth = (percent: number) => {
+    return '' + ((width - 2 * options.margin * options.lightsPerLine) / options.lightsPerLine) * percent + 'px';
+  };
+
   const mainStyle = (index: number) => {
     let color = lastvals[index].color;
+
     let forecolor = 'white';
 
+    if (options.graphType!=='background')
+    {      
+      color="#00000000"
+    }
     if (options.useBackgroundColor) {
       color = options.backgroundColor;
       forecolor = options.foregroundColor;
@@ -61,9 +71,22 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       backgroundColor: color,
       color: forecolor,
       border: 'solid ' + options.borderSize + 'px ' + options.borderColor,
-      width: '' + (width - 2 * options.margin * options.lightsPerLine) / options.lightsPerLine + 'px',
+      width: computeWidth(1),
       borderRadius: '' + options.borderRadius + 'px',
     };
+  };
+
+  const computeTrafficColor = (index: number, trafficIndex: number) => {
+    if (trafficIndex === lastvals[index].colorIndex) {
+      if (trafficIndex === 0) {
+        return 'red';
+      } else if (trafficIndex === 1) {
+        return 'orange';
+      } else {
+        return 'green';
+      }
+    }
+    return 'black';
   };
 
   const mainStyleTrend = (index: number) => {
@@ -77,7 +100,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
     };
   };
 
-  let lastvals: Array<{ lastVal: any; lastVal2: any; diff: any; color: string }>;
+  let lastvals: Array<{ lastVal: any; lastVal2: any; diff: any; color: string; colorIndex: number }>;
   lastvals = data.series
     .map((series) => series.fields.find((field) => field.type === 'number'))
     .map((field) => {
@@ -85,6 +108,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       let lastval2 = null;
       let diff = null;
       let color = 'grey';
+      let colorindex = 1;
       if (field != null) {
         let clean = field.values.filter((e) => e != null);
 
@@ -98,21 +122,25 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
             if (options.invertedScale) {
               if (diff >= 0) {
                 color = 'green';
+                colorindex = 2;
               } else if (diff < 0) {
                 color = 'red';
+                colorindex = 0;
               }
             } else {
               if (diff >= 0) {
                 color = 'red';
+                colorindex = 0;
               } else if (diff < 0) {
                 color = 'green';
+                colorindex = 2;
               }
             }
           }
         }
-        return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color };
+        return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color, colorIndex: colorindex };
       }
-      return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color };
+      return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color, colorIndex: colorindex };
     });
 
   return (
@@ -133,6 +161,35 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
               {options.showValue && (
                 <div style={{ textAlign: 'center' as const, fontSize: options.valueFontSize }}>
                   {lastvals[index].lastVal} {options.showUnits ? options.units : ''}
+                </div>
+              )}
+              {options.graphType === 'svg' && (
+                <div style={{ width: '100%', textAlign: 'center' }}>
+                  <svg viewBox={options.svgViewBox} className="" width={computeWidth(0.7)} height={computeWidth(0.7)}>
+                    <g stroke={lastvals[index].color} fill={lastvals[index].color}>
+                      <path d={options.svgIcon}></path>
+                    </g>
+                  </svg>
+                </div>
+              )}
+              {options.graphType === 'traffic' && (
+                <div className="traffic-light-vis">
+                  <div className="traffic-light-box">
+                    <div
+                      className="traffic-light-container"
+                      style={{
+                        marginLeft: computeWidth(0.4),
+                        width: computeWidth(0.2),
+                        height: computeWidth(2.68 * 0.2),
+                      }}
+                    >
+                      <div className="traffic-light">
+                        <div className="light" style={{ backgroundColor: computeTrafficColor(index, 0) }}></div>
+                        <div className="light" style={{ backgroundColor: computeTrafficColor(index, 1) }}></div>
+                        <div className="light" style={{ backgroundColor: computeTrafficColor(index, 2) }}></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
               {options.showTrend && (
