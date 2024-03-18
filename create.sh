@@ -2,7 +2,9 @@
 
 #export GRAFANA_ACCESS_POLICY_TOKEN=TO
 
-version="2.0.7"
+version="2.0.8"
+version=`cat package.json | grep "version" | cut -f2 -d ':' | sed s/\"//g  | sed s/\ //g  | sed s/,//g`
+echo 'Version:'$version
 
 cp README.md ./src/README.md
 
