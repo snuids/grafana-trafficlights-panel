@@ -21,7 +21,10 @@ export interface SimpleOptions {
   backgroundColor: string;
   foregroundColor: string;
   showValue: boolean;
+  showValueDigits: number;
   showTrend: boolean;
+  showTrendAsPercentage: boolean;
+  showTrendDigits: number;
   width: number;
   
   svgViewBox: string;

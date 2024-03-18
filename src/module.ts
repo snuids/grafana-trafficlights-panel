@@ -174,6 +174,17 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
       defaultValue: true,
     })
     .addSliderInput({
+      path: 'showValueDigits',
+      name: 'Value Digits',
+      description: 'Number of digits of value',
+      defaultValue: 2,
+      settings: {
+        min: 0,
+        max: 8
+      },
+      showIf: (config) => config.showValue
+    })
+    .addSliderInput({
       path: 'valueFontSize',
       name: 'Value Font Size',
       description: 'Size of font',
@@ -188,6 +199,22 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
       path: 'showTrend',
       name: 'Show Trend',
       defaultValue: true,
+    })
+    .addBooleanSwitch({
+      path: 'showTrendAsPercentage',
+      name: 'Show Trend As Percentage',
+      defaultValue: true,
+    })    
+    .addSliderInput({
+      path: 'showTrendDigits',
+      name: 'Trend Digits',
+      description: 'Number of digits of trends',
+      defaultValue: 2,
+      settings: {
+        min: 0,
+        max: 8
+      },
+      showIf: (config) => config.showTrend
     })
     .addSliderInput({
       path: 'trendFontSize',
