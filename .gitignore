@@ -37,3 +37,4 @@ e2e-results/
 .eslintcache
 src/.DS_Store
 packages/.DS_Store
+src/img/.DS_Store
