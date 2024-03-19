@@ -2,7 +2,7 @@
 
 #export GRAFANA_ACCESS_POLICY_TOKEN=TO
 
-version="2.0.8"
+version="2.0.10"
 version=`cat package.json | grep "version" | cut -f2 -d ':' | sed s/\"//g  | sed s/\ //g  | sed s/,//g`
 echo 'Version:'$version
 

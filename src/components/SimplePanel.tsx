@@ -130,7 +130,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         if (clean.length > 0) {
           lastval = clean[clean.length - 1];
         }
-        if (options.meterType === 'diff') {
+        if (options.meterType === 'diff' || options.showTrend) {
           if (clean.length - 1 > 0) {
             lastval2 = clean[clean.length - 2];
             diff = lastval2 - lastval;
