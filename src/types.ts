@@ -29,6 +29,7 @@ export interface SimpleOptions {
   
   svgViewBox: string;
   svgIcon: string;
+  showValueAsOverlay: boolean;
   
   nameFontSize: number;
   valueFontSize: number;

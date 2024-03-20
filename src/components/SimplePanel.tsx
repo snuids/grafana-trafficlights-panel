@@ -212,18 +212,31 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         {lastvals.map((one, index) => {
           return (
             <div key={index} style={mainStyle(index)} title={"Current:"+one.lastVal+" Previous:"+one.lastVal2}>
-              {options.showValue && (
+              {options.showValue && (!(options.showValueAsOverlay && options.graphType==='svg')) && (
                 <div style={{ textAlign: 'center' as const, fontSize: options.valueFontSize }}>
                   {one.lastVal?.toFixed(options.showValueDigits)} {options.showUnits ? options.units : ''}
                 </div>
               )}
               {options.graphType === 'svg' && (
-                <div style={{ width: '100%', textAlign: 'center' }}>
+                <div style={{ width: '100%', textAlign: 'center',position:'relative' }}>
                   <svg viewBox={options.svgViewBox} className="" width={computeWidth(0.7)} height={computeWidth(0.7)}>
                     <g stroke={one.color} fill={one.color}>
                       <path d={options.svgIcon}></path>
                     </g>
                   </svg>
+                  {options.showValueAsOverlay && options.graphType==='svg' && options.showValue &&
+              <div style={{position:'absolute' as const,width:'100%',top:'0px'
+                ,bottom:'0px',display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                alignItems: 'center',
+                opacity: '0.9'
+                }}>
+                  <span style={{backgroundColor:one.color,color:'white',paddingLeft:'5px',paddingRight:'5px',fontSize: options.valueFontSize}}>                                        
+                  {one.lastVal?.toFixed(options.showValueDigits)} {options.showUnits ? options.units : ''}
+                  </span>
+                </div>}
                 </div>
               )}
               {options.graphType === 'traffic' && (
@@ -253,6 +266,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
               )}
 
               <div style={{ textAlign: 'center', fontSize: options.nameFontSize }}>{one.name}</div>
+              
             </div>
           );
         })}

@@ -55,6 +55,11 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
         , defaultValue: '0 0 512 512'
         , showIf: (config) => config.graphType === 'svg'
       })
+    .addBooleanSwitch(
+      {path:'showValueAsOverlay',
+      name:'Show Value On SVG',
+      defaultValue: false}
+    )
     .addSliderInput({
       path: 'lightsPerLine',
       name: 'Lights Per Line',
