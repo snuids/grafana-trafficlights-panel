@@ -46,23 +46,17 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
     return convert_ht['' + s.name];
   });
 
-  const computeTrend = (one: any)=>
-  {
-    let val=one.diff;
-    if (options.showTrendAsPercentage)
-    {
-      
-
-      return (((one.lastVal-one.lastVal2)/one.lastVal2)*100).toFixed(options.showTrendDigits)+' %'
+  const computeTrend = (one: any) => {
+    let val = one.diff;
+    if (options.showTrendAsPercentage) {
+      return (((one.lastVal - one.lastVal2) / one.lastVal2) * 100).toFixed(options.showTrendDigits) + ' %';
     }
-    let sign=''
-    if (one.diff>0)
-    {
-      sign='+'
+    let sign = '';
+    if (one.diff > 0) {
+      sign = '+';
     }
-    return sign+val?.toFixed(options.showTrendDigits)
-  }
-  
+    return sign + val?.toFixed(options.showTrendDigits);
+  };
 
   const computeWidth = (percent: number) => {
     return '' + ((width - 2 * options.margin * options.lightsPerLine) / options.lightsPerLine) * percent + 'px';
@@ -106,6 +100,9 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
 
   const mainStyleTrend = (index: number) => {
     return {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
       textAlign: 'center' as const,
       fontSize: options.trendFontSize,
       backgroundColor: lastvals[index].color,
@@ -115,7 +112,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
     };
   };
 
-  let lastvals: Array<{ lastVal: any; lastVal2: any; diff: any; color: string; colorIndex: number,name: string }>;
+  let lastvals: Array<{ lastVal: any; lastVal2: any; diff: any; color: string; colorIndex: number; name: string }>;
   lastvals = data.series
     .map((series) => series.fields.find((field) => field.type === 'number'))
     .map((field) => {
@@ -134,9 +131,8 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
           if (clean.length - 1 > 0) {
             lastval2 = clean[clean.length - 2];
             diff = lastval2 - lastval;
-            if (options.showTrendAsPercentage)
-            {
-              diff=(((lastval-lastval2)/lastval2)*100)
+            if (options.showTrendAsPercentage) {
+              diff = ((lastval - lastval2) / lastval2) * 100;
             }
             if (!(options.minimumAbsoluteChange > 0 && Math.abs(diff) < options.minimumAbsoluteChange)) {
               if (options.invertedScale) {
@@ -157,10 +153,8 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
                 }
               }
             }
-          } 
-        }
-        else {
-          
+          }
+        } else {
           if (options.invertedScale) {
             if (lastval >= options.thresholdMaxValue) {
               color = 'green';
@@ -178,23 +172,20 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
               colorindex = 2;
             }
           }
-          
         }
-        return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color, colorIndex: colorindex,name:"" };
+        return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color, colorIndex: colorindex, name: '' };
       }
-      return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color, colorIndex: colorindex,name:"" };
+      return { lastVal: lastval, lastVal2: lastval2, diff: diff, color: color, colorIndex: colorindex, name: '' };
     });
 
-  let i=0;
-  for (let s of serieNames)
-  {
-    lastvals[i].name=s;
+  let i = 0;
+  for (let s of serieNames) {
+    lastvals[i].name = s;
     i++;
   }
-  
-  if ((options.sortByDiff)&&(options.meterType==='diff'))
-  {
-    lastvals.sort((a,b)=>Math.abs(b.diff)-Math.abs(a.diff))
+
+  if (options.sortByDiff && options.meterType === 'diff') {
+    lastvals.sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff));
   }
 
   return (
@@ -211,32 +202,58 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
       <div>
         {lastvals.map((one, index) => {
           return (
-            <div key={index} style={mainStyle(index)} title={"Current:"+one.lastVal+" Previous:"+one.lastVal2}>
-              {options.showValue && (!(options.showValueAsOverlay && options.graphType==='svg')) && (
-                <div style={{ textAlign: 'center' as const, fontSize: options.valueFontSize }}>
+            <div key={index} style={mainStyle(index)} title={'Current:' + one.lastVal + ' Previous:' + one.lastVal2}>
+              {options.showValue && !(options.showValueAsOverlay && options.graphType === 'svg') && (
+                <div
+                  style={{
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    textAlign: 'center' as const,
+                    fontSize: options.valueFontSize,
+                  }}
+                >
                   {one.lastVal?.toFixed(options.showValueDigits)} {options.showUnits ? options.units : ''}
                 </div>
               )}
               {options.graphType === 'svg' && (
-                <div style={{ width: '100%', textAlign: 'center',position:'relative' }}>
+                <div style={{ width: '100%', textAlign: 'center', position: 'relative' }}>
                   <svg viewBox={options.svgViewBox} className="" width={computeWidth(0.7)} height={computeWidth(0.7)}>
                     <g stroke={one.color} fill={one.color}>
                       <path d={options.svgIcon}></path>
                     </g>
                   </svg>
-                  {options.showValueAsOverlay && options.graphType==='svg' && options.showValue &&
-              <div style={{position:'absolute' as const,width:'100%',top:'0px'
-                ,bottom:'0px',display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                alignItems: 'center',
-                opacity: '0.9'
-                }}>
-                  <span style={{backgroundColor:one.color,color:'white',paddingLeft:'5px',paddingRight:'5px',fontSize: options.valueFontSize}}>                                        
-                  {one.lastVal?.toFixed(options.showValueDigits)} {options.showUnits ? options.units : ''}
-                  </span>
-                </div>}
+                  {options.showValueAsOverlay && options.graphType === 'svg' && options.showValue && (
+                    <div
+                      style={{
+                        position: 'absolute' as const,
+                        width: '100%',
+                        top: '0px',
+                        bottom: '0px',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        opacity: '0.9',
+                      }}
+                    >
+                      <span
+                        style={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          backgroundColor: one.color,
+                          color: 'white',
+                          paddingLeft: '5px',
+                          paddingRight: '5px',
+                          fontSize: options.valueFontSize,
+                        }}
+                      >
+                        {one.lastVal?.toFixed(options.showValueDigits)} {options.showUnits ? options.units : ''}
+                      </span>
+                    </div>
+                  )}
                 </div>
               )}
               {options.graphType === 'traffic' && (
@@ -259,14 +276,19 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
                   </div>
                 </div>
               )}
-              {options.showTrend && (
-                <div style={mainStyleTrend(index)}>                  
-                  {computeTrend(one)}
-                </div>
-              )}
+              {options.showTrend && <div style={mainStyleTrend(index)}>{computeTrend(one)}</div>}
 
-              <div style={{ textAlign: 'center', fontSize: options.nameFontSize }}>{one.name}</div>
-              
+              <div
+                style={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  textAlign: 'center',
+                  fontSize: options.nameFontSize,
+                }}
+              >
+                {one.name}
+              </div>
             </div>
           );
         })}
