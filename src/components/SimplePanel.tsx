@@ -49,7 +49,12 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
   const computeTrend = (one: any) => {
     let val = one.diff;
     if (options.showTrendAsPercentage) {
-      return (((one.lastVal - one.lastVal2) / one.lastVal2) * 100).toFixed(options.showTrendDigits) + ' %';
+      let diff2=one.lastVal - one.lastVal2;
+      let sign=''
+      if (one.diff > 0) {
+        sign = '+';
+      }  
+      return sign+(((diff2) / one.lastVal2) * 100).toFixed(options.showTrendDigits) + ' %';
     }
     let sign = '';
     if (one.diff > 0) {
@@ -130,7 +135,7 @@ export const SimplePanel: React.FC<Props> = ({ options, data, width, height }) =
         if (options.meterType === 'diff' || options.showTrend) {
           if (clean.length - 1 > 0) {
             lastval2 = clean[clean.length - 2];
-            diff = lastval2 - lastval;
+            diff = lastval - lastval2;
             if (options.showTrendAsPercentage) {
               diff = ((lastval - lastval2) / lastval2) * 100;
             }
