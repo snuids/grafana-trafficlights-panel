@@ -2,7 +2,7 @@ version: '3.0'
 
 services:
   grafana:
-    container_name: 'snuids-trafficlights-panel'
+    container_name: 'snuids-trend-panel'
     platform: 'linux/amd64'
     build:
       context: ./.config
@@ -12,5 +12,5 @@ services:
     ports:
       - 3000:3000/tcp
     volumes:
-      - ./dist:/var/lib/grafana/plugins/snuids-trafficlights-panel
+      - ./dist:/var/lib/grafana/plugins/snuids-trend-panel
       - ./provisioning:/etc/grafana/provisioning

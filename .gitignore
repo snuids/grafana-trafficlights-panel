@@ -8,6 +8,7 @@ yarn-error.log*
 
 snuids-trafficlights-panel/**
 snuids-trafficlights2-panel/**
+snuids-trend-panel/**
 node_modules/
 
 # Runtime data

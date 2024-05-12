@@ -63,8 +63,8 @@ export const plugin = new PanelPlugin<SimpleOptions>(SimplePanel).setPanelOption
     )
     .addSliderInput({
       path: 'lightsPerLine',
-      name: 'Lights Per Line',
-      description: 'Lights Per Line',
+      name: 'Graphics Per Line',
+      description: 'Graphics Per Line',
       defaultValue: 5,
       settings: {
         min: 1,
