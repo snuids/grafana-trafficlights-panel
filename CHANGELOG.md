@@ -1,5 +1,5 @@
 # Changelog
 
-## 1.0.0 (Unreleased)
+## 2.0.15 (Released)
 
-Initial release.
+Initial grafana release.
