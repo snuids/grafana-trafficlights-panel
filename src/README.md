@@ -5,9 +5,6 @@ This grafana panel displays trend panels based on the data source most recent ti
 The plugin was tested with Elastic Search 7.0 as data source.
 The trend is computed between the last and previous date aggregation of the serie.
 
-## Installation
-
-Copy the dist folder in your grafana plugin directory and rename it to trafficlight.
 
 # Screenshots
 
@@ -25,7 +22,5 @@ Copy the dist folder in your grafana plugin directory and rename it to trafficli
 ![Traffic Lights](https://raw.githubusercontent.com/snuids/grafana-trafficlights-panel/master/src/media/Datasource.png)
 
 
-# Versions
-## v2.0.0 (16/Mar/2024)
-- First version
+
 

@@ -4,7 +4,7 @@
 
 echo '===='
 echo $GRAFANA_ACCESS_POLICY_TOKEN
-version="2.0.14"
+version="2.0.15"
 version=`cat package.json | grep "version" | cut -f2 -d ':' | sed s/\"//g  | sed s/\ //g  | sed s/,//g`
 echo 'Version:'$version
 
